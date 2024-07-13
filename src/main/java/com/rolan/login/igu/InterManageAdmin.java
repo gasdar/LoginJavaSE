@@ -13,7 +13,7 @@ public class InterManageAdmin extends javax.swing.JFrame {
         this.control = control;
         this.user = user;
         txtUsername.setText(user.getUsername());
-        // updateTable();
+        updateTable();
     }
 
     @SuppressWarnings("unchecked")
@@ -169,18 +169,18 @@ public class InterManageAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteUserActionPerformed
 
     private void btnUpdateUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateUsersActionPerformed
-        // TODO add your handling code here:
+       // ESTA ACCIÓN NOS PERMITIRÁ CARGAR NUEVAMENTE A LOS USUARIOS EN LA TABLA
+       updateTable();
     }//GEN-LAST:event_btnUpdateUsersActionPerformed
 
     private void btnSignOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignOffActionPerformed
         this.dispose();
-        redirectLogin(control);
+        InterfaceHelper.redirectLogin(control);
     }//GEN-LAST:event_btnSignOffActionPerformed
-    
-    public static void redirectLogin(ControladoraLogica controladoraLogica) {
-        InterLogin interLogin = new InterLogin(controladoraLogica);
-        interLogin.setVisible(true);
-        interLogin.setLocationRelativeTo(null);
+     
+    private void updateTable() {              
+       // FINALMENTE ASIGNAMOS EL MODELO A LA TABLA
+       tblUsers.setModel(InterfaceHelper.createTable(control.findAllUsers()));
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

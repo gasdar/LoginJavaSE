@@ -13,7 +13,7 @@ public class InterManageUser extends javax.swing.JFrame {
         this.control = control;
         this.user = user;
         txtUsername.setText(user.getUsername());
-        // updateTable();
+        updateTable();
     }
 
     @SuppressWarnings("unchecked")
@@ -130,14 +130,18 @@ public class InterManageUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUpdateUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateUsersActionPerformed
-        // TODO add your handling code here:
+        updateTable();
     }//GEN-LAST:event_btnUpdateUsersActionPerformed
 
     private void btnSignOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignOffActionPerformed
         this.dispose();
-        InterManageAdmin.redirectLogin(control);
+        InterfaceHelper.redirectLogin(control);
     }//GEN-LAST:event_btnSignOffActionPerformed
 
+    private void updateTable() {
+        tblUsers.setModel(InterfaceHelper.createTable(control.findAllUsersWithoutAdmin()));
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSignOff;
     private javax.swing.JButton btnUpdateUsers;

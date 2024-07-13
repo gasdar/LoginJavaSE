@@ -1,6 +1,7 @@
 package com.rolan.login.logica;
 
 import com.rolan.login.persistencia.ControladoraPersistencia;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControladoraLogica {
@@ -16,8 +17,11 @@ public class ControladoraLogica {
     }
 
     // MÉTODOS RELACIONADOS CON: USER
+    public List<User> findAllUsers() {
+        return controlPersis.findUsers();
+    }
     public User findUserByNameAndPassword(String username, String password) {
-        List<User> users = controlPersis.findUsers();
+        List<User> users = findAllUsers();
         User user = null;
         if(!users.isEmpty()) {
             for(User u : users) {
@@ -29,8 +33,17 @@ public class ControladoraLogica {
         }
         return user;
     }
-
-    // VERIFICACIONES DE USUARIOS
+    public List<User> findAllUsersWithoutAdmin() {
+        List<User> users = findAllUsers();
+        List<User> usersRoleUser = new ArrayList<>();
+        for(User user : users) {
+            if(!isUserAdmin(user)) {
+                usersRoleUser.add(user);
+            }
+        }
+        return usersRoleUser;
+    }
+    // VERIFICACIONES DE USUARIO
     public boolean isUserAdmin(User u) {
         if(!u.getRoles().isEmpty()) {
             for(Role role : u.getRoles()) {
