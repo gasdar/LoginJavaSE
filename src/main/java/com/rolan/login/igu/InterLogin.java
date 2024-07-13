@@ -3,17 +3,17 @@ package com.rolan.login.igu;
 import com.rolan.login.logica.ControladoraLogica;
 import com.rolan.login.logica.User;
 
-public class InterfazLogin extends javax.swing.JFrame {
+public class InterLogin extends javax.swing.JFrame {
 
     private ControladoraLogica control = null;
-    private String username = null;
-    private String password = null;
-    private StringBuilder sb = null;
     
-    public InterfazLogin() {
+    public InterLogin() {
         initComponents();
         control = new ControladoraLogica();
-        sb = new StringBuilder();
+    }
+    public InterLogin(ControladoraLogica control) {
+        initComponents();
+        this.control = control;
     }
 
     @SuppressWarnings("unchecked")
@@ -130,7 +130,8 @@ public class InterfazLogin extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -141,9 +142,7 @@ public class InterfazLogin extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -164,11 +163,12 @@ public class InterfazLogin extends javax.swing.JFrame {
     // CADA VEZ QUE SE LLAME SE CREARAN MUCHOS OBJETOS CON LA MISMA
     // ESTRUCTURA Y PERJUDICARÁ EN EL RENDIMIENTO DE LA APLICACIÓN
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        username = txtUsername.getText();
+        String username = txtUsername.getText();
+        StringBuilder sb = new StringBuilder();
         for(char pass : txtPassword.getPassword()) {
             sb.append(pass);
         }
-        password = sb.toString();
+        String password = sb.toString();
         sb.delete(0, txtPassword.getPassword().length);
         
         if(username.isBlank() || password.isBlank()) {
@@ -178,11 +178,25 @@ public class InterfazLogin extends javax.swing.JFrame {
             if(user == null) {
                 txtMessage.setText("Credenciales incorrectas!!");
             } else {
-                txtMessage.setText("Bienvenido " + user.getUsername() + "!!");
+                txtMessage.setText("Bienvenido(a) " + user.getUsername() + "!!");
+                successfulLogin(user);
             }
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
+    private void successfulLogin(User u) {
+        if(control.isUserAdmin(u)) {
+            InterManageAdmin ima = new InterManageAdmin(control, u);
+            ima.setVisible(true);
+            ima.setLocationRelativeTo(null);
+        } else {
+            InterManageUser imu = new InterManageUser(control, u);
+            imu.setVisible(true);
+            imu.setLocationRelativeTo(null);
+        }
+        this.dispose();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnLogin;
