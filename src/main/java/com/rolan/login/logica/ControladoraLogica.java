@@ -54,5 +54,26 @@ public class ControladoraLogica {
         }
         return false;
     }
+
+    public void createUser(String username, String password, String IsAdmin) {
+        List<Role> userRoles = findRolBySearchingIsAdmin(IsAdmin);
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setRoles(userRoles);
+        controlPersis.createUser(user);
+    }
+    
+    public List<Role> findRolBySearchingIsAdmin(String IsAdmin) {
+        List<Role> roles = controlPersis.findRoles();
+        List<Role> userRoles = new ArrayList<>();
+        for(Role role : roles) {
+            if(role.getName().equalsIgnoreCase("role_admin") && IsAdmin.equalsIgnoreCase("no")) {
+                continue;
+            }
+            userRoles.add(role);
+        }
+        return userRoles;
+    }
     
 }

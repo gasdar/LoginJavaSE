@@ -2,6 +2,7 @@ package com.rolan.login.igu;
 
 import com.rolan.login.logica.ControladoraLogica;
 import com.rolan.login.logica.User;
+import javax.swing.JOptionPane;
 
 public class InterManageAdmin extends javax.swing.JFrame {
 
@@ -39,6 +40,11 @@ public class InterManageAdmin extends javax.swing.JFrame {
 
         btnCreateUser.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         btnCreateUser.setText("Crear Usuario");
+        btnCreateUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateUserActionPerformed(evt);
+            }
+        });
 
         btnEditUser.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         btnEditUser.setText("Editar Usuario");
@@ -171,16 +177,22 @@ public class InterManageAdmin extends javax.swing.JFrame {
     private void btnUpdateUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateUsersActionPerformed
        // ESTA ACCIÓN NOS PERMITIRÁ CARGAR NUEVAMENTE A LOS USUARIOS EN LA TABLA
        updateTable();
+       InterfaceHelper.message("REGISTROS ACTUALIZADOS", "Los registros de la tabla se han actualizado!", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnUpdateUsersActionPerformed
 
     private void btnSignOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignOffActionPerformed
         this.dispose();
         InterfaceHelper.redirectLogin(control);
     }//GEN-LAST:event_btnSignOffActionPerformed
+
+    private void btnCreateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateUserActionPerformed
+        InterfaceHelper.redirectCreateUser(control, user);
+        this.dispose();
+    }//GEN-LAST:event_btnCreateUserActionPerformed
      
     private void updateTable() {              
        // FINALMENTE ASIGNAMOS EL MODELO A LA TABLA
-       tblUsers.setModel(InterfaceHelper.createTable(control.findAllUsers()));
+       tblUsers.setModel(InterfaceHelper.tableCreate(control.findAllUsers()));
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

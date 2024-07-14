@@ -26,7 +26,7 @@ public class InterLogin extends javax.swing.JFrame {
         txtUsername = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
-        btnLimpiar = new javax.swing.JButton();
+        btnClean = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtMessage = new javax.swing.JTextArea();
         jSeparator3 = new javax.swing.JSeparator();
@@ -59,11 +59,11 @@ public class InterLogin extends javax.swing.JFrame {
             }
         });
 
-        btnLimpiar.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        btnLimpiar.setText("Limpiar");
-        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+        btnClean.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnClean.setText("Limpiar");
+        btnClean.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimpiarActionPerformed(evt);
+                btnCleanActionPerformed(evt);
             }
         });
 
@@ -95,7 +95,7 @@ public class InterLogin extends javax.swing.JFrame {
                         .addGap(41, 41, 41)
                         .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                        .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnClean, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(46, 46, 46))
                     .addComponent(jSeparator2)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -126,7 +126,7 @@ public class InterLogin extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnClean, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
@@ -152,11 +152,11 @@ public class InterLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUsernameActionPerformed
 
-    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+    private void btnCleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCleanActionPerformed
         txtUsername.setText("");
         txtPassword.setText("");
         txtMessage.setText("");
-    }//GEN-LAST:event_btnLimpiarActionPerformed
+    }//GEN-LAST:event_btnCleanActionPerformed
 
     // NO COLOCAR INSTANCIAS DE OBJETOS DENTRO DE UNA FUNCIONALIDAD 
     // QUE SE A DE LLAMAR MUCHAS VECES EN LA PLATAFORMA, SINO
@@ -164,12 +164,7 @@ public class InterLogin extends javax.swing.JFrame {
     // ESTRUCTURA Y PERJUDICARÁ EN EL RENDIMIENTO DE LA APLICACIÓN
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String username = txtUsername.getText();
-        StringBuilder sb = new StringBuilder();
-        for(char pass : txtPassword.getPassword()) {
-            sb.append(pass);
-        }
-        String password = sb.toString();
-        sb.delete(0, txtPassword.getPassword().length);
+        String password = InterfaceHelper.userPassword(txtPassword.getPassword());
         
         if(username.isBlank() || password.isBlank()) {
             txtMessage.setText("Los campos no pueden estar vacíos!!");
@@ -186,19 +181,15 @@ public class InterLogin extends javax.swing.JFrame {
 
     private void successfulLogin(User u) {
         if(control.isUserAdmin(u)) {
-            InterManageAdmin ima = new InterManageAdmin(control, u);
-            ima.setVisible(true);
-            ima.setLocationRelativeTo(null);
+            InterfaceHelper.redirectManageAdmin(control, u);
         } else {
-            InterManageUser imu = new InterManageUser(control, u);
-            imu.setVisible(true);
-            imu.setLocationRelativeTo(null);
+            InterfaceHelper.redirectManageUser(control, u);
         }
         this.dispose();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnClean;
     private javax.swing.JButton btnLogin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

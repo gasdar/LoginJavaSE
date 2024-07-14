@@ -2,6 +2,7 @@ package com.rolan.login.igu;
 
 import com.rolan.login.logica.ControladoraLogica;
 import com.rolan.login.logica.User;
+import javax.swing.JOptionPane;
 
 public class InterManageUser extends javax.swing.JFrame {
 
@@ -131,6 +132,7 @@ public class InterManageUser extends javax.swing.JFrame {
 
     private void btnUpdateUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateUsersActionPerformed
         updateTable();
+        InterfaceHelper.message("REGISTROS ACTUALIZADOS", "Los registros de la tabla se han actualizado!", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnUpdateUsersActionPerformed
 
     private void btnSignOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignOffActionPerformed
@@ -139,7 +141,7 @@ public class InterManageUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSignOffActionPerformed
 
     private void updateTable() {
-        tblUsers.setModel(InterfaceHelper.createTable(control.findAllUsersWithoutAdmin()));
+        tblUsers.setModel(InterfaceHelper.tableCreate(control.findAllUsersWithoutAdmin()));
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

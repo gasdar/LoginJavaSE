@@ -1,5 +1,6 @@
 package com.rolan.login.persistencia;
 
+import com.rolan.login.logica.Role;
 import com.rolan.login.logica.User;
 import java.util.List;
 
@@ -18,6 +19,14 @@ public class ControladoraPersistencia {
     // MÉTODOS CRUD DE: USER JPA
     public List<User> findUsers() {
         return userJpa.findUserEntities();
+    }
+    public void createUser(User user) {
+        userJpa.create(user);
+    }
+
+    // MÉTODOS CRUD DE: ROLE JPA
+    public List<Role> findRoles() {
+        return roleJpa.findRoleEntities();
     }
     
 }
