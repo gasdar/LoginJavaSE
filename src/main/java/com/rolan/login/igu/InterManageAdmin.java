@@ -14,7 +14,7 @@ public class InterManageAdmin extends javax.swing.JFrame {
         this.control = control;
         this.user = user;
         txtUsername.setText(user.getUsername());
-        updateTable();
+        this.updateTable();
     }
 
     @SuppressWarnings("unchecked")
@@ -167,27 +167,76 @@ public class InterManageAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditUserActionPerformed
-        // TODO add your handling code here:
+        if(InterfaceHelper.userIsActive(control, user)) {
+            if(tblUsers.getRowCount() > 0) {
+                if(tblUsers.getSelectedRow() != -1) {
+                    User userEdit = control.findUserById(Integer.parseInt(String.valueOf(tblUsers.getValueAt(tblUsers.getSelectedRow(), 0))));
+                    if(userEdit != null) {
+                        InterfaceHelper.redirectEditUser(control, user, userEdit);
+                        this.dispose();
+                    } else {
+                        InterfaceHelper.message("USUARIO NO ENCONTRADO", "El usuario no fue encontrado.", JOptionPane.WARNING_MESSAGE);
+                        this.updateTable();
+                    }
+                } else {
+                    InterfaceHelper.message("SIN SELECCIONAR", "Debe seleccionar un registro, para continuar el procedimiento.", JOptionPane.WARNING_MESSAGE);
+                    this.updateTable();
+                }
+            } else {
+                InterfaceHelper.message("SIN REGISTROS", "No se han encontrado registros para ser eliminados.", JOptionPane.WARNING_MESSAGE);
+                this.updateTable();
+            }
+        } else {
+            InterfaceHelper.userLostConnection(control, this);
+        }
     }//GEN-LAST:event_btnEditUserActionPerformed
 
     private void btnDeleteUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUserActionPerformed
-        // TODO add your handling code here:
+        if(InterfaceHelper.userIsActive(control, user)) {
+            // PRIMERO: VALIDAR SI EXISTEN DATOS EN LA TABLA PARA SER ELIMINADOS
+            if(tblUsers.getRowCount() > 0) {
+                // SEGUNDO: VALIDAR SI SE HA SELECCIONADO UNA FILA
+                if(tblUsers.getSelectedRow() > -1) {
+                    int userId = Integer.parseInt(tblUsers.getValueAt(tblUsers.getSelectedRow(), 0).toString());
+                    String name = tblUsers.getValueAt(tblUsers.getSelectedRow(), 1).toString();
+                    boolean isDeleted = control.deleteUser(userId, name);
+                    if(isDeleted){
+                        InterfaceHelper.message("USUARIO ELIMINADO", "El usuario ha sido eliminado correctamente!", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else {
+                    InterfaceHelper.message("SIN SELECCIONAR", "Debe seleccionar un registro, para continuar el procedimiento.", JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                InterfaceHelper.message("SIN REGISTROS", "No se han encontrado registros para ser eliminados.", JOptionPane.WARNING_MESSAGE);
+            }
+            this.updateTable();
+        } else {
+            InterfaceHelper.userLostConnection(control, this);
+        }
     }//GEN-LAST:event_btnDeleteUserActionPerformed
 
     private void btnUpdateUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateUsersActionPerformed
        // ESTA ACCIÓN NOS PERMITIRÁ CARGAR NUEVAMENTE A LOS USUARIOS EN LA TABLA
-       updateTable();
-       InterfaceHelper.message("REGISTROS ACTUALIZADOS", "Los registros de la tabla se han actualizado!", JOptionPane.INFORMATION_MESSAGE);
+       if(InterfaceHelper.userIsActive(control, user)) {
+            this.updateTable();
+            InterfaceHelper.message("REGISTROS ACTUALIZADOS", "Los registros de la tabla se han actualizado!", JOptionPane.INFORMATION_MESSAGE);
+       } else {
+           InterfaceHelper.userLostConnection(control, this);
+       }
     }//GEN-LAST:event_btnUpdateUsersActionPerformed
 
     private void btnSignOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignOffActionPerformed
-        this.dispose();
         InterfaceHelper.redirectLogin(control);
+        this.dispose();
     }//GEN-LAST:event_btnSignOffActionPerformed
 
     private void btnCreateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateUserActionPerformed
-        InterfaceHelper.redirectCreateUser(control, user);
-        this.dispose();
+        if(InterfaceHelper.userIsActive(control, user)) {
+            InterfaceHelper.redirectCreateUser(control, user);
+            this.dispose();
+        } else {
+            InterfaceHelper.userLostConnection(control, this);
+        }
     }//GEN-LAST:event_btnCreateUserActionPerformed
      
     private void updateTable() {              

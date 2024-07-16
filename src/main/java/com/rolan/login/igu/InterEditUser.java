@@ -4,15 +4,18 @@ import com.rolan.login.logica.ControladoraLogica;
 import com.rolan.login.logica.User;
 import javax.swing.JOptionPane;
 
-public class InterCreateUser extends javax.swing.JFrame {
+public class InterEditUser extends javax.swing.JFrame {
 
     private ControladoraLogica control = null;
     private User user = null;
+    private User userEdit = null;
     
-    public InterCreateUser(ControladoraLogica control, User user) {
+    public InterEditUser(ControladoraLogica control, User user, User userEdit) {
         initComponents();
         this.control = control;
         this.user = user;
+        this.userEdit = userEdit;
+        this.restoreFields();
     }
 
     @SuppressWarnings("unchecked")
@@ -28,13 +31,13 @@ public class InterCreateUser extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         cmbIsAdmin = new javax.swing.JComboBox<>();
         btnBack = new javax.swing.JButton();
-        btnClean = new javax.swing.JButton();
-        btnRegister = new javax.swing.JButton();
+        btnRestore = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
-        jLabel1.setText("Registrar Usuario");
+        jLabel1.setText("Editar Usuario");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Nombre de Usuario:");
@@ -65,19 +68,19 @@ public class InterCreateUser extends javax.swing.JFrame {
             }
         });
 
-        btnClean.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        btnClean.setText("Limpiar");
-        btnClean.addActionListener(new java.awt.event.ActionListener() {
+        btnRestore.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnRestore.setText("Restaurar");
+        btnRestore.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCleanActionPerformed(evt);
+                btnRestoreActionPerformed(evt);
             }
         });
 
-        btnRegister.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        btnRegister.setText("Registrar");
-        btnRegister.addActionListener(new java.awt.event.ActionListener() {
+        btnEdit.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnEdit.setText("Editar");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegisterActionPerformed(evt);
+                btnEditActionPerformed(evt);
             }
         });
 
@@ -86,18 +89,18 @@ public class InterCreateUser extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(155, Short.MAX_VALUE)
+                .addContainerGap(173, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(156, 156, 156))
+                .addGap(173, 173, 173))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
-                        .addComponent(btnClean, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnRestore, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -130,8 +133,8 @@ public class InterCreateUser extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnClean, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnRestore, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
@@ -162,41 +165,50 @@ public class InterCreateUser extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBackActionPerformed
 
-    private void btnCleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCleanActionPerformed
+    private void btnRestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestoreActionPerformed
         if(InterfaceHelper.userIsActive(control, user)) {
-            cleanFields();
+            this.restoreFields();
+            InterfaceHelper.message("USUARIO RESTAURADO", "Se han restaurado los campos del usuario!", JOptionPane.INFORMATION_MESSAGE);
         } else {
             InterfaceHelper.userLostConnection(control, this);
         }
-    }//GEN-LAST:event_btnCleanActionPerformed
+    }//GEN-LAST:event_btnRestoreActionPerformed
 
-    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         if(InterfaceHelper.userIsActive(control, user)) {
             String username = txtUsername.getText();
             String password = InterfaceHelper.userPassword(txtPassword.getPassword());
             if(!username.isBlank() && !password.isBlank()) {
                 String isAdmin = cmbIsAdmin.getItemAt(cmbIsAdmin.getSelectedIndex());
-                control.createUser(username.trim(), password.trim(), isAdmin);
-                cleanFields();
-                InterfaceHelper.message("USUARIO REGISTRADO", "El usuario se ha registrado con éxito!", JOptionPane.INFORMATION_MESSAGE);
+                User userEdited = control.editUser(userEdit, username, password, isAdmin);
+                if(userEdited != null) {
+                    userEdit = userEdited;
+                    user = (user.getId()==userEdit.getId()) ? userEdit : user;
+                    InterfaceHelper.message("USUARIO EDITADO", "El usuario se ha editado con éxito!", JOptionPane.INFORMATION_MESSAGE);
+                }
             } else {
                 InterfaceHelper.message("DEBE INGRESAR CREDENCIALES", "Debe ingresar credenciales correctas", JOptionPane.WARNING_MESSAGE);
             }
         } else {
             InterfaceHelper.userLostConnection(control, this);
         }
-    }//GEN-LAST:event_btnRegisterActionPerformed
+    }//GEN-LAST:event_btnEditActionPerformed
 
-    private void cleanFields() {
-        txtUsername.setText("");
-        txtPassword.setText("");
-        cmbIsAdmin.setSelectedIndex(0);
+    private void restoreFields() {
+        txtUsername.setText(userEdit.getUsername());
+        txtPassword.setText(userEdit.getPassword());
+        boolean isAdmin = control.isUserAdmin(userEdit);
+        if(isAdmin) {
+            cmbIsAdmin.setSelectedIndex(1);
+        } else {
+            cmbIsAdmin.setSelectedIndex(0);
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
-    private javax.swing.JButton btnClean;
-    private javax.swing.JButton btnRegister;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnRestore;
     private javax.swing.JComboBox<String> cmbIsAdmin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
